@@ -1,0 +1,4 @@
+# questions
+repo_name:
+    type: str
+    help: Имя репозитория проекта?

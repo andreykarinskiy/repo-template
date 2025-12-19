@@ -1,0 +1,158 @@
+# .gitattributes for cross-platform compatibility
+# https://git-scm.com/docs/gitattributes
+
+# Auto detect text files and normalize line endings to LF in repository
+* text=auto eol=lf
+
+# Explicitly declare text files
+*.md text
+*.txt text
+*.yml text
+*.yaml text
+*.json text
+*.xml text
+*.toml text
+*.ini text
+*.cfg text
+*.conf text
+
+# Source code
+*.py text
+*.js text
+*.ts text
+*.jsx text
+*.tsx text
+*.java text
+*.kt text
+*.cs text
+*.go text
+*.rs text
+*.c text
+*.cpp text
+*.h text
+*.hpp text
+*.php text
+*.rb text
+*.sh text eol=lf
+*.bash text eol=lf
+
+# Scripts
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Configuration files
+.gitignore text
+.gitattributes text
+.editorconfig text
+Makefile text
+LICENSE text
+AUTHORS text
+CHANGELOG text
+CONTRIBUTING text
+README text
+
+# Documentation
+*.tex text
+*.adoc text
+*.textile text
+*.mustache text
+*.csv text
+*.tab text
+*.tsv text
+*.sql text
+
+# Templates
+*.jinja text
+*.j2 text
+*.template text
+*.tpl text
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg binary
+*.webp binary
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.tgz binary
+*.bz2 binary
+*.7z binary
+*.rar binary
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.eot binary
+
+# Archives
+*.jar binary
+*.war binary
+*.ear binary
+*.class binary
+
+# Python
+*.pyc binary
+*.pyo binary
+*.pyd binary
+
+# Media files
+*.mp4 binary
+*.mp3 binary
+*.mov binary
+*.avi binary
+*.wav binary
+*.flac binary
+
+# Database
+*.db binary
+*.sqlite binary
+*.sqlite3 binary
+
+# Office documents
+*.doc binary
+*.docx binary
+*.xls binary
+*.xlsx binary
+*.ppt binary
+*.pptx binary
+
+# Diff settings for specific files
+*.json diff=json
+*.md diff=markdown
+*.py diff=python
+*.java diff=java
+*.cs diff=csharp
+
+# Merge settings
+*.json merge=union
+CHANGELOG.md merge=union
+
+# Linguist overrides for GitHub language statistics
+# Documentation
+docs/** linguist-documentation
+*.md linguist-documentation
+
+# Generated files
+dist/** linguist-generated
+build/** linguist-generated
+
+# Export-ignore - files not included in git archive
+.gitattributes export-ignore
+.gitignore export-ignore
+.editorconfig export-ignore
+.github/ export-ignore
+tests/ export-ignore
+.idea/ export-ignore
+.vscode/ export-ignore
+*.test.* export-ignore
+

@@ -1,0 +1,24 @@
+repos:
+  # Базовые проверки файлов
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace        # Удаляет лишние пробелы
+      - id: end-of-file-fixer          # Добавляет пустую строку в конец файла
+      - id: check-added-large-files    # Блокирует большие файлы (> 500KB)
+        args: ['--maxkb=500']
+      - id: check-merge-conflict       # Проверяет на незавершенные merge conflicts
+      - id: check-case-conflict        # Проверяет конфликты имен файлов
+      - id: mixed-line-ending          # Проверяет смешанные line endings
+      - id: detect-private-key         # Детектирует приватные ключи
+
+  # Проверка соответствия commit convention
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.13.0
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
+        # Указываем путь к конфигу через переменную окружения
+        pass_filenames: false
+        entry: bash -c 'COMMITIZEN_CONFIG=config/git/.cz.toml cz check --commit-msg-file'
+        language: system
