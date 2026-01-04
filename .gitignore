@@ -14,6 +14,7 @@ ehthumbs_vista.db
 Desktop.ini
 $RECYCLE.BIN/
 *.lnk
+*.stackdump
 
 # macOS
 .DS_Store
@@ -55,8 +56,79 @@ Temporary Items
 *.ipr
 out/
 .idea_modules/
+
+# Visual Studio (не Code)
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Eclipse
+.project
+.classpath
+.settings/
+.loadpath
+.externalToolBuilders/
+
+# NetBeans
+nbproject/
+nbbuild/
+nbdist/
+.nb-gradle/
+
+# Vim
 *.swp
 *.swo
+*.swn
+*~
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
+# Emacs
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Atom
+.atom/
+
+# Файлы окружения
+.env
+.env.local
+.env.*.local
+.env.*.backup
+
+# Директории сборки и артефакты
+build/
+dist/
+target/
+bin/
+obj/
+*.egg-info/
+*.egg
+
+# Coverage и тестирование
+coverage/
+.coverage
+.coverage.*
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+.nyc_output/
+*.lcov
 
 # Временные файлы и логи
 *.log
@@ -68,3 +140,5 @@ out/
 *.pid
 *.seed
 *.pid.lock
+*.orig
+*.rej
