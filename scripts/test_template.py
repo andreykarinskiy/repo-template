@@ -16,6 +16,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import yaml
 from pathlib import Path
 from typing import Tuple
 
@@ -135,13 +136,14 @@ def check_dirs_exist(base_path: Path, dirs: list) -> Tuple[bool, list]:
     return len(missing) == 0, missing
 
 
-def check_readme_content(readme_path: Path, test_data: dict) -> Tuple[bool, str]:
+def check_readme_content(readme_path: Path, test_data: dict, profile_path: Path = None) -> Tuple[bool, str]:
     """
     Проверяет содержимое README.md.
     
     Args:
         readme_path: Путь к файлу README.md
         test_data: Тестовые данные для проверки
+        profile_path: Путь к файлу PROFILE.yml для проверки атрибутов
         
     Returns:
         Кортеж (успех, сообщение об ошибке)
@@ -168,6 +170,28 @@ def check_readme_content(readme_path: Path, test_data: dict) -> Tuple[bool, str]
         # Проверяем наличие copyright_year в блоке License
         if test_data["copyright_year"] not in content:
             return False, f"copyright_year '{test_data['copyright_year']}' не найден в README.md"
+        
+        # Проверяем атрибуты из PROFILE.yml, если файл указан
+        if profile_path and profile_path.exists():
+            with open(profile_path, 'r', encoding='utf-8') as f:
+                profile = yaml.safe_load(f)
+            
+            # Проверяем наличие organization
+            if profile.get('organization'):
+                if profile['organization'] not in content:
+                    return False, f"organization '{profile['organization']}' не найден в README.md"
+            
+            # Проверяем наличие contact
+            contact = profile.get('contact', {})
+            if contact.get('email') and contact['email'] not in content:
+                return False, f"contact.email '{contact['email']}' не найден в README.md"
+            if contact.get('telegram_id') and contact['telegram_id'] not in content:
+                return False, f"contact.telegram_id '{contact['telegram_id']}' не найден в README.md"
+            
+            # Проверяем наличие author (имя автора из PROFILE.yml может использоваться в License)
+            author = profile.get('author', {})
+            if author.get('name') and author['name'] not in content:
+                return False, f"author.name '{author['name']}' не найден в README.md"
         
         return True, "Содержимое README.md корректно"
         
@@ -225,7 +249,8 @@ def main():
         
         print(f"\n4. Проверка содержимого README.md...")
         readme_path = test_project_path / "README.md"
-        content_ok, content_message = check_readme_content(readme_path, TEST_DATA)
+        profile_path = test_project_path / "PROFILE.yml"
+        content_ok, content_message = check_readme_content(readme_path, TEST_DATA, profile_path)
         if not content_ok:
             print(f"   [ERROR] {content_message}")
             sys.exit(1)

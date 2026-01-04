@@ -8,8 +8,25 @@
 {{ project_tags }}
 {% endif %}
 
+{% if organization %}
+## Организация
+
+{{ organization }}
+{% endif %}
+
+{% if contact and (contact.email or contact.telegram_id) %}
+## Контакты
+
+{% if contact.email %}
+- Email: {{ contact.email }}
+{% endif %}
+{% if contact.telegram_id %}
+- Telegram: {{ contact.telegram_id }}
+{% endif %}
+{% endif %}
+
 ## License
 
 MIT License
 
-Copyright (c) {{ copyright_year }} {{ author_name }}
+Copyright (c) {{ copyright_year }} {{ author.name if author and author.name else author_name }}
