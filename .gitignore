@@ -110,6 +110,10 @@ tramp
 .env.*.local
 .env.*.backup
 
+# Docker
+docker-compose.override.yml
+docker-compose.override.*.yml
+
 # Директории сборки и артефакты
 build/
 dist/
