@@ -1,0 +1,14 @@
+# Профиль организации
+# Этот файл содержит информацию об организации/компании
+
+organization: "DEFAULT-ORG"
+
+# Контактная информация
+contact:
+  email: "contact@mail.ru"
+  telegram_id: "@contact"
+
+# Информация об авторе (может переопределяться из git config)
+author:
+  name: "Andrey Karinskiy"
+  email: "a.karinskiy@mail.ru"
