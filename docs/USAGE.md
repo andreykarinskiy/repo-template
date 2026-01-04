@@ -61,11 +61,11 @@ copier --version
 Для создания нового проекта на основе шаблона выполните команду:
 
 ```bash
-copier copy https://github.com/andreykarinskiy/repo-template.git path/to/your-project
+copier copy <URL_РЕПОЗИТОРИЯ_ШАБЛОНА> path/to/your-project
 ```
 
 Где:
-- `https://github.com/andreykarinskiy/repo-template.git` — URL репозитория с шаблоном
+- `<URL_РЕПОЗИТОРИЯ_ШАБЛОНА>` — URL репозитория с шаблоном (например, `https://github.com/owner/repo-template.git`) или локальный путь к шаблону (например, `.` для текущей директории или `../repo-template` для относительного пути)
 - `path/to/your-project` — путь к директории, где будет создан новый проект
 
 После выполнения команды Copier запросит у вас значения для параметров проекта.
@@ -115,8 +115,11 @@ copier copy https://github.com/andreykarinskiy/repo-template.git path/to/your-pr
 ## Пример использования
 
 ```bash
-# Создание нового проекта
-copier copy https://github.com/andreykarinskiy/repo-template.git my-project
+# Создание нового проекта (удаленный репозиторий)
+copier copy https://github.com/owner/repo-template.git my-project
+
+# Или локальный путь
+copier copy . my-project
 
 # В процессе генерации вам будет предложено ввести:
 # project_name: my-project
@@ -146,8 +149,10 @@ Copier автоматически определит источник шабло
 Если необходимо указать источник шаблона явно:
 
 ```bash
-copier update https://github.com/andreykarinskiy/repo-template.git
+copier update <URL_РЕПОЗИТОРИЯ_ШАБЛОНА>
 ```
+
+Где `<URL_РЕПОЗИТОРИЯ_ШАБЛОНА>` — URL репозитория с шаблоном или локальный путь.
 
 ### Процесс обновления
 
@@ -161,4 +166,3 @@ copier update https://github.com/andreykarinskiy/repo-template.git
 ## Дополнительная информация
 
 - Документация Copier: https://copier.readthedocs.io/
-- Репозиторий шаблона: https://github.com/andreykarinskiy/repo-template
