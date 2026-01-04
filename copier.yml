@@ -33,4 +33,7 @@ author_email:
 copyright_year:
   type: str
   help: "Год для копирайта"
-  default: "{{ 'now' | date('%Y') }}"
+  default_type: yaml
+  default: |
+    from datetime import datetime
+    str(datetime.now().year)
