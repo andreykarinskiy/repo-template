@@ -1,0 +1,36 @@
+# Конфигурация шаблона Copier
+_answers_file: .copier-answers.yml
+
+# Имя проекта
+project_name:
+  type: str
+  help: "Имя проекта"
+
+# Описание проекта
+project_description:
+  type: str
+  help: "Описание проекта"
+
+# Тэги проекта (разделитель - запятая)
+project_tags:
+  type: str
+  help: "Тэги проекта (разделитель - запятая, может быть пустым)"
+  default: ""
+
+# Имя автора
+author_name:
+  type: str
+  help: "Имя автора (можно получить из git config: git config user.name)"
+  default: ""
+
+# Email автора
+author_email:
+  type: str
+  help: "Email автора (можно получить из git config: git config user.email)"
+  default: ""
+
+# Год копирайта
+copyright_year:
+  type: str
+  help: "Год для копирайта"
+  default: "{{ 'now' | date('%Y') }}"
