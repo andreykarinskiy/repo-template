@@ -24,32 +24,124 @@ python3 --version
 
 `pipx` позволяет устанавливать приложения Python в изолированном окружении.
 
-**Установка:**
+#### Глобальная установка pipx
+
+**Windows:**
+
 ```bash
-# Windows
+# Установка через pip (глобально для текущего пользователя)
 pip install pipx
 pipx ensurepath
+```
 
-# macOS
+После установки перезапустите терминал или выполните:
+```bash
+refreshenv  # Если используете Chocolatey
+# или вручную добавьте путь в PATH
+```
+
+**macOS:**
+
+Рекомендуется использовать Homebrew для глобальной установки:
+
+```bash
+# Установка через Homebrew (системная установка)
 brew install pipx
 pipx ensurepath
 
-# Linux
-python3 -m pip install --user pipx
-python3 -m pip ensurepath --user
+# Для глобального доступа всем пользователям (опционально)
+sudo pipx ensurepath --global
 ```
 
+Альтернативный способ через pip:
+
+```bash
+pip install pipx
+pipx ensurepath
+```
+
+**Linux (Ubuntu/Debian):**
+
+Рекомендуется использовать системный пакетный менеджер:
+
+```bash
+# Установка через apt (системная установка)
+sudo apt update
+sudo apt install pipx
+pipx ensurepath
+
+# Для глобального доступа всем пользователям (опционально)
+sudo pipx ensurepath --global
+```
+
+Альтернативный способ через pip:
+
+```bash
+# Для текущего пользователя
+python3 -m pip install --user pipx
+python3 -m pip ensurepath --user
+
+# Или глобально (требуются права root)
+sudo python3 -m pip install pipx
+sudo pipx ensurepath --global
+```
+
+**Проверка установки:**
+
+```bash
+pipx --version
+```
+
+**Примечание:** Команда `pipx ensurepath` автоматически добавляет путь к исполняемым файлам pipx в переменную окружения `PATH`. После установки может потребоваться перезапустить терминал.
+
 ### 3. Copier
+
+#### Рекомендуемый способ: через pipx
 
 Установка Copier через pipx (рекомендуемый способ):
 ```bash
 pipx install copier
 ```
 
-Альтернативный способ через pip:
+**Преимущества pipx:**
+- Изолированное окружение для каждого приложения
+- Нет конфликтов зависимостей
+- Легкое удаление приложений
+- Нет предупреждений о правах доступа
+
+#### Альтернативный способ: через pip
+
+Если вы используете `pip` напрямую:
 ```bash
 pip install copier
 ```
+
+**Важно:** Если при установке появляется предупреждение:
+
+```text
+Defaulting to user installation because normal site-packages is not writeable
+```
+
+Это **не ошибка**, а предупреждение о том, что пакет устанавливается в пользовательскую директорию (так как системная директория недоступна для записи). Установка прошла успешно, и Copier должен работать.
+
+**Варианты решения:**
+1. **Использовать pipx** (рекомендуется) — см. выше
+2. **Использовать виртуальное окружение:**
+   ```bash
+   python -m venv venv
+   # Windows
+   venv\Scripts\activate
+   # Linux/macOS
+   source venv/bin/activate
+   pip install copier
+   ```
+3. **Установить в системную директорию** (требуются права администратора):
+   ```bash
+   # Linux/macOS
+   sudo pip install copier
+   # Windows (запустить PowerShell/CMD от имени администратора)
+   pip install copier
+   ```
 
 **Проверка установки:**
 ```bash
