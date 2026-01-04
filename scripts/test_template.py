@@ -191,38 +191,38 @@ def main():
         
         success, message = run_copier_copy(TEMPLATE_DIR, test_project_path, TEST_DATA)
         if not success:
-            print(f"   ❌ ОШИБКА: {message}")
+            print(f"   [ERROR] {message}")
             sys.exit(1)
         
-        print(f"   ✅ {message}")
+        print(f"   [OK] {message}")
         
         print(f"\n2. Проверка наличия файлов...")
         files_ok, missing_files = check_files_exist(test_project_path, EXPECTED_FILES)
         if not files_ok:
-            print(f"   ❌ ОШИБКА: Отсутствуют файлы: {', '.join(missing_files)}")
+            print(f"   [ERROR] Отсутствуют файлы: {', '.join(missing_files)}")
             sys.exit(1)
         
-        print(f"   ✅ Все файлы присутствуют")
+        print(f"   [OK] Все файлы присутствуют")
         
         print(f"\n3. Проверка наличия директорий...")
         dirs_ok, missing_dirs = check_dirs_exist(test_project_path, EXPECTED_DIRS)
         if not dirs_ok:
-            print(f"   ❌ ОШИБКА: Отсутствуют директории: {', '.join(missing_dirs)}")
+            print(f"   [ERROR] Отсутствуют директории: {', '.join(missing_dirs)}")
             sys.exit(1)
         
-        print(f"   ✅ Все директории присутствуют")
+        print(f"   [OK] Все директории присутствуют")
         
         print(f"\n4. Проверка содержимого README.md...")
         readme_path = test_project_path / "README.md"
         content_ok, content_message = check_readme_content(readme_path, TEST_DATA)
         if not content_ok:
-            print(f"   ❌ ОШИБКА: {content_message}")
+            print(f"   [ERROR] {content_message}")
             sys.exit(1)
         
-        print(f"   ✅ {content_message}")
+        print(f"   [OK] {content_message}")
         
         print(f"\n{'=' * 60}")
-        print("✅ Все проверки пройдены успешно!")
+        print("[OK] Все проверки пройдены успешно!")
         print(f"{'=' * 60}\n")
         
         # Временная директория будет автоматически удалена при выходе из with
