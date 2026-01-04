@@ -10,8 +10,8 @@
 5. Очищает результаты работы скрипта
 """
 
+import argparse
 import json
-import os
 import shutil
 import subprocess
 import sys
@@ -177,14 +177,25 @@ def check_readme_content(readme_path: Path, test_data: dict) -> Tuple[bool, str]
 
 def main():
     """Основная функция скрипта."""
+    parser = argparse.ArgumentParser(
+        description="Скрипт автотестирования шаблона Copier"
+    )
+    parser.add_argument(
+        "--keep",
+        action="store_true",
+        help="Не удалять временную директорию после выполнения тестов (полезно для отладки)"
+    )
+    args = parser.parse_args()
+    
     print("=" * 60)
     print("Автотестирование шаблона Copier")
     print("=" * 60)
     
     # Создаем временную директорию для тестирования
-    with tempfile.TemporaryDirectory(prefix="copier_test_") as temp_dir:
-        test_project_path = Path(temp_dir) / TEST_DATA["project_name"]
-        
+    temp_dir = tempfile.mkdtemp(prefix="copier_test_")
+    test_project_path = Path(temp_dir) / TEST_DATA["project_name"]
+    
+    try:
         print(f"\n1. Запуск copier copy...")
         print(f"   Шаблон: {TEMPLATE_DIR}")
         print(f"   Назначение: {test_project_path}")
@@ -225,7 +236,15 @@ def main():
         print("[OK] Все проверки пройдены успешно!")
         print(f"{'=' * 60}\n")
         
-        # Временная директория будет автоматически удалена при выходе из with
+    finally:
+        # Удаляем временную директорию, если флаг --keep не установлен
+        if not args.keep:
+            try:
+                shutil.rmtree(temp_dir)
+            except Exception as e:
+                print(f"\n[WARNING] Не удалось удалить временную директорию {temp_dir}: {e}")
+        else:
+            print(f"\n[INFO] Временная директория сохранена: {test_project_path}")
 
 
 if __name__ == "__main__":
