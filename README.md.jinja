@@ -14,14 +14,14 @@
 {{ organization }}
 {% endif %}
 
-{% if contact and (contact.email or contact.telegram_id) %}
+{% if contact_email or contact_telegram_id %}
 ## Контакты
 
-{% if contact.email %}
-- Email: {{ contact.email }}
+{% if contact_email %}
+- Email: {{ contact_email }}
 {% endif %}
-{% if contact.telegram_id %}
-- Telegram: {{ contact.telegram_id }}
+{% if contact_telegram_id %}
+- Telegram: {{ contact_telegram_id }}
 {% endif %}
 {% endif %}
 
@@ -29,4 +29,4 @@
 
 MIT License
 
-Copyright (c) {{ copyright_year }} {{ author.name if author and author.name else author_name }}
+Copyright (c) {{ copyright_year }} {{ author_name_from_profile if author_name_from_profile else author_name }}

@@ -39,42 +39,26 @@ copyright_year:
 organization:
   type: str
   help: "Название организации"
-  default: !python |
-    import yaml
-    from pathlib import Path
-    # В контексте Copier код выполняется в директории шаблона
-    # PROFILE.yml должен находиться в той же директории, что и copier.yml
-    profile_path = Path('PROFILE.yml')
-    if profile_path.exists():
-        with open(profile_path, 'r', encoding='utf-8') as f:
-            profile = yaml.safe_load(f)
-            return profile.get('organization', 'DEFAULT-ORG')
-    return 'DEFAULT-ORG'
+  default: "DEFAULT-ORG"
 
 # Контактная информация (из PROFILE.yml)
-contact:
-  type: dict
-  help: "Контактная информация"
-  default: !python |
-    import yaml
-    from pathlib import Path
-    profile_path = Path('PROFILE.yml')
-    if profile_path.exists():
-        with open(profile_path, 'r', encoding='utf-8') as f:
-            profile = yaml.safe_load(f)
-            return profile.get('contact', {'email': '', 'telegram_id': ''})
-    return {'email': '', 'telegram_id': ''}
+contact_email:
+  type: str
+  help: "Email для контактов"
+  default: "contact@mail.ru"
+
+contact_telegram_id:
+  type: str
+  help: "Telegram ID для контактов"
+  default: "@contact"
 
 # Информация об авторе (из PROFILE.yml)
-author:
-  type: dict
-  help: "Информация об авторе"
-  default: !python |
-    import yaml
-    from pathlib import Path
-    profile_path = Path('PROFILE.yml')
-    if profile_path.exists():
-        with open(profile_path, 'r', encoding='utf-8') as f:
-            profile = yaml.safe_load(f)
-            return profile.get('author', {'name': '', 'email': ''})
-    return {'name': '', 'email': ''}
+author_name_from_profile:
+  type: str
+  help: "Имя автора из профиля"
+  default: "Andrey Karinskiy"
+
+author_email_from_profile:
+  type: str
+  help: "Email автора из профиля"
+  default: "a.karinskiy@mail.ru"
