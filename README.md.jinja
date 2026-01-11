@@ -1,0 +1,15 @@
+# {{ project_name }}
+
+> {{ company }}
+> {{ contacts }}
+
+{% if project_tags %}
+## Теги
+{% for tag in project_tags.strip().split() -%}
+- `{{ tag.upper() }}`
+{% endfor %}
+{% endif %}
+## Лицензия
+{{ license }}
+
+Copyright (c) {{ now().year }} {{ company }}

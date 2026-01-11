@@ -1,0 +1,51 @@
+# _tasks: Список команд (shell или массивов), которые выполняются после успешного копирования шаблона. Например, инициализация Git или установка зависимостей.
+# _migrations: Скрипты для автоматического обновления уже созданных проектов при изменении шаблона.
+# _answers_file: Позволяет переопределить стандартное имя файла ответов (по умолчанию .copier-answers.yml).
+# _exclude: Паттерны файлов (в стиле .gitignore), которые не будут копироваться из шаблона.
+# _skip_if_exists: Файлы, которые не будут перезаписаны, если уже существуют в целевом проекте.
+
+_tasks:
+  - ["make", "init"]
+
+_exclude:
+  - PROFILE.yml
+  - copier.yml
+  - USAGE.md
+
+_skip_if_exists:
+  - README.md
+
+project_name:
+  type: str
+  help: Укажите название проекта.
+
+license:
+  type: str
+  help: Выберите лицензию.
+  choices:
+    - GPL
+    - MIT
+    - None
+  default: MIT
+
+project_tags:
+  type: str
+  help: |
+    Введите теги для проекта, разделяя их пробелами.
+    Пример: `веб backend python документация`
+  default: ""
+  
+---
+!include PROFILE.yml
+---
+
+_message_before_copy: |
+    Создание нового проекта на основе корпоративного шаблона.
+
+_message_after_copy: |
+    Новый проект "{{ project_name }}" создан!
+
+    Для начала работы:
+    1. Перейти в рабочий каталог:
+        $ cd {{ _copier_conf.dst_path }}
+    2. Изучить README.md

@@ -1,0 +1,8 @@
+# Атрибуты всех проектов, которые никогда не меняются.
+contacts:
+  type: str
+  default: support@nedra.team
+
+company:
+  type: str
+  default: NEDRA
