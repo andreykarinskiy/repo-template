@@ -123,6 +123,11 @@ obj/
 *.egg-info/
 *.egg
 
+# Python байткод
+__pycache__/
+*.pyc
+*.pyo
+
 # Coverage и тестирование
 coverage/
 .coverage
