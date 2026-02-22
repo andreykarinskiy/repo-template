@@ -1,0 +1,56 @@
+[tool.commitizen]
+name = "cz_customize"
+tag_format = "$version"
+version_scheme = "semver"
+version = "0.0.3"
+version_files = [
+    "version.json"
+]
+update_changelog_on_bump = true
+major_version_zero = true
+
+[tool.commitizen.customize]
+message_template = "{{change_type}}{% if scope %}({{scope}}){% endif %}: {{subject}}{% if body %}\n\n{{body}}{% endif %}{% if footer %}\n\n{{footer}}{% endif %}"
+example = "feat(config): Добавить настройку"
+schema = "<type>(<scope>): <subject>"
+schema_pattern = "^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\\([\\w\\-\\.]+\\))?: .+$"
+bump_pattern = "^(feat|fix|refactor|perf)(\\(.+\\))?:"
+bump_map = { feat = "MINOR", fix = "PATCH", refactor = "PATCH", perf = "PATCH" }
+
+[[tool.commitizen.customize.questions]]
+type = "list"
+name = "change_type"
+message = "Выберите тип изменения:"
+choices = [
+  { value = "feat", name = "feat:     Новая функциональность" },
+  { value = "fix", name = "fix:      Исправление ошибки" },
+  { value = "docs", name = "docs:     Изменения в документации" },
+  { value = "style", name = "style:    Форматирование (без влияния на логику)" },
+  { value = "refactor", name = "refactor: Рефакторинг кода" },
+  { value = "perf", name = "perf:     Улучшение производительности" },
+  { value = "test", name = "test:     Добавление или изменение тестов" },
+  { value = "build", name = "build:    Сборка или зависимости" },
+  { value = "ci", name = "ci:       Изменения в CI/CD" },
+  { value = "chore", name = "chore:    Прочие изменения" },
+  { value = "revert", name = "revert:   Откат предыдущего коммита" }
+]
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "scope"
+message = "Укажите область изменений (scope), можно оставить пустым:"
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "subject"
+message = "Опишите изменение кратко (до 50 символов):"
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "body"
+message = "Детальное описание (необязательно, до 120 символов):"
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "footer"
+message = "Ссылки на issues (необязательно, например: #123):"
