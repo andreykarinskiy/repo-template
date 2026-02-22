@@ -1,25 +1,36 @@
 # Универсальные команды управления репозиторием.
 # ВНИМАНИЕ! Команды, помеченные как "TODO", нужно реализовать, а после удалить текст "TODO:".
 # Определение shell в зависимости от ОС (кроссплатформенность: Windows, Linux, Mac)
+
+MAKEFLAGS += --no-print-directory
+
 ifeq ($(OS),Windows_NT)
-    # Приоритет 1: короткий формат пути (8.3) - самый надежный, без пробелов
+    DEVNULL := >NUL 2>&1
+    # Явный путь к bash.exe Git for Windows (не "bash" из PATH — там может быть WSL)
     ifneq ($(wildcard C:/PROGRA~1/Git/bin/bash.exe),)
-        SHELL := C:/PROGRA~1/Git/bin/bash.exe
-    # Приоритет 2: короткий формат для Program Files (x86)
+        GIT_BASH_EXE := C:/PROGRA~1/Git/bin/bash.exe
     else ifneq ($(wildcard C:/PROGRA~2/Git/bin/bash.exe),)
-        SHELL := C:/PROGRA~2/Git/bin/bash.exe
-    # Приоритет 3: полный путь с кавычками (для путей с пробелами)
-    else ifneq ($(wildcard "C:/Program Files/Git/bin/bash.exe"),)
-        SHELL := "C:/Program Files/Git/bin/bash.exe"
-    else ifneq ($(wildcard "C:/Program Files (x86)/Git/bin/bash.exe"),)
-        SHELL := "C:/Program Files (x86)/Git/bin/bash.exe"
+        GIT_BASH_EXE := C:/PROGRA~2/Git/bin/bash.exe
+    else ifneq ($(wildcard C:/Program Files/Git/bin/bash.exe),)
+        GIT_BASH_EXE := C:/Program Files/Git/bin/bash.exe
+    else ifneq ($(wildcard C:/Program Files (x86)/Git/bin/bash.exe),)
+        GIT_BASH_EXE := C:/Program Files (x86)/Git/bin/bash.exe
     else
-        $(error Git bash не найден. Установите Git for Windows или добавьте его в PATH)
+        GIT_BASH_EXE :=
+    endif
+    ifneq ($(GIT_BASH_EXE),)
+        SHELL := $(GIT_BASH_EXE)
+    else
+        $(error Git bash не найден. Установите Git for Windows и добавьте его в PATH)
     endif
     .SHELLFLAGS := -c
+    # Явный путь к bash — обход WSL (bash в PATH может быть wsl.exe) и бага CreateProcess
+    GIT_INIT_CMD := cmd /c "\"$(GIT_BASH_EXE)\" scripts/git-init.sh"
 else
+    DEVNULL := >/dev/null 2>&1
     SHELL := /bin/bash
     .SHELLFLAGS := -c
+    GIT_INIT_CMD := bash scripts/git-init.sh
 endif
 
 .DEFAULT_GOAL := help
@@ -53,7 +64,7 @@ endef
 ifeq ($(OS),Windows_NT)
     # На Windows проверяем доступность Python через прямой вызов
     # Пробуем python3, затем python, затем python.exe и python3.exe
-    PYTHON_CMD := $(shell python3 --version >/dev/null 2>&1 && echo python3 || (python --version >/dev/null 2>&1 && echo python || (python.exe --version >/dev/null 2>&1 && echo python.exe || (python3.exe --version >/dev/null 2>&1 && echo python3.exe || echo ""))))
+    PYTHON_CMD := $(shell python3 --version $(DEVNULL) && echo python3 || (python --version $(DEVNULL) && echo python || (python.exe --version $(DEVNULL) && echo python.exe || (python3.exe --version $(DEVNULL) && echo python3.exe || echo ""))))
 else
     # На Unix-системах используем command -v
     PYTHON_CMD := $(shell command -v python3 2>/dev/null || command -v python 2>/dev/null || echo "")
@@ -65,9 +76,9 @@ ifeq ($(PYTHON_CMD),)
 endif
 
 # Проверка версии Python (должен быть 3.x) с улучшенной обработкой ошибок
-PYTHON_VERSION_CHECK := $(shell $(PYTHON_CMD) -c "import sys; exit(0 if sys.version_info >= (3, 0) else 1)" 2>/dev/null && echo "ok" || echo "error")
+PYTHON_VERSION_CHECK := $(shell $(PYTHON_CMD) -c "import sys; exit(0 if sys.version_info >= (3, 0) else 1)" $(DEVNULL) && echo "ok" || echo "error")
 ifeq ($(PYTHON_VERSION_CHECK),error)
-    PYTHON_VERSION := $(shell $(PYTHON_CMD) --version 2>&1 | head -n 1 || echo "unknown version")
+    PYTHON_VERSION := $(shell $(PYTHON_CMD) --version 2>&1)
     $(error Требуется Python 3.x. Найденная версия Python не поддерживается: $(PYTHON_VERSION). Проверьте установку Python 3.x)
 endif
 
@@ -100,27 +111,7 @@ help: ## Список поддерживаемых команд
 init: git-init install-git-hooks install-commitizen ## Инициализация репозитория.
 
 git-init:
-	@echo Инициализация Git и GitFlow...
-	@# Проверка наличия git-flow
-	@if ! command -v git-flow >/dev/null 2>&1 && ! git flow version >/dev/null 2>&1; then \
-		echo "Ошибка: git-flow не найден. Установите git-flow:"; \
-		echo "  Windows: входит в состав Git for Windows"; \
-		echo "  Linux: sudo apt-get install git-flow или brew install git-flow"; \
-		exit 1; \
-	fi
-	@git init || true
-	@# Создаём начальный коммит, если репозиторий пустой (нужен для checkout и git flow init)
-	@if [ -z "$$(git rev-list -n 1 --all 2>/dev/null)" ]; then \
-		echo "Создание начального коммита..."; \
-		git commit --allow-empty -m "chore: Initial commit" || \
-		(echo "Ошибка: не удалось создать начальный коммит. Убедитесь, что git настроен (user.name и user.email)"; exit 1); \
-	fi
-	@# Создаём или переключаемся на develop
-	@git checkout -b develop 2>/dev/null || git checkout develop || \
-		(echo "Ошибка: не удалось создать ветку develop"; exit 1)
-	@# Инициализируем GitFlow
-	@git flow init -d || \
-		(echo "Ошибка: не удалось инициализировать GitFlow. Убедитесь, что git-flow установлен."; exit 1)
+	@$(GIT_INIT_CMD)
 
 
 install-git-hooks: # Установка git-хуков для валидации, линтинга и т.п.
